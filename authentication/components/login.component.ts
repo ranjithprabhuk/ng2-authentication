@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { NotificationsService } from 'angular2-notifications';
-
 import { AuthenticationService } from '../authentication.service';
 
 @Component({
@@ -13,10 +11,11 @@ import { AuthenticationService } from '../authentication.service';
 
 export class LoginComponent {
 
-    constructor(private authService: AuthenticationService, public router: Router, private _notificationsService: NotificationsService) { }
+    constructor(private authService: AuthenticationService, public router: Router) { }
 
     private userDetails: Object = {};
     public isRemember: boolean = true;
+	private pathToNavigate : string[] = ['/dashboard'];
 
     public options = {
         position: ["bottom", "left"],
@@ -30,22 +29,9 @@ export class LoginComponent {
             //call the authService to chekc the credentials
             this.authService.login(data).then(res => {
                 console.log("response>>", res);
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(this.pathToNavigate);
             }).catch(err => err);
         }
     }
 
-    public ShowAlert(): void {
-        this._notificationsService.success(
-            'Some Title',
-            'Some Content',
-            {
-                timeOut: 5000,
-                showProgressBar: true,
-                pauseOnHover: false,
-                clickToClose: false,
-                maxLength: 10
-            }
-        )
-    }
 }
